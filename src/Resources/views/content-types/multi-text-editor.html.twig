@@ -1,0 +1,16 @@
+{% set value = property.value|default('') %}
+{% set config = property.params.config.value|default('default') %}
+
+<div class="multi-text-editor-container"
+     data-aura-component="multi-text-editor@cfceditor"
+     data-aura-instance-name="{{ id|raw }}"
+     data-aura-value="{{ value|escape }}"
+     data-aura-config="{{ config }}">
+     
+    <textarea name="{{ property.name }}" 
+              id="{{ id }}"
+              class="form-control"
+              style="display: none;">{{ value|escape }}</textarea>
+              
+    <div id="{{ id }}-editor" class="editor-container"></div>
+</div>
