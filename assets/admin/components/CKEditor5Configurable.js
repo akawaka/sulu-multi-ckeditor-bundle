@@ -18,6 +18,8 @@ import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import FontPlugin from '@ckeditor/ckeditor5-font/src/font';
 import {translate} from 'sulu-admin-bundle/utils/Translator';
+import ExternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/ExternalLinkPlugin";
+import InternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin";
 import configRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/configRegistry';
 import pluginRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/pluginRegistry';
 import type {IObservableValue} from 'mobx/lib/mobx';
@@ -86,6 +88,8 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     'italic',
                     'bulletedlist',
                     'numberedlist',
+                    'internalLink',
+                    'externalLink',
                 ],
                 heading: {
                     options: [
@@ -110,6 +114,8 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     'bulletedlist',
                     'numberedlist',
                     'fontcolor',
+                    'internalLink',
+                    'externalLink',
                 ],
                 heading: {
                     options: [
@@ -166,6 +172,8 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                 'numberedlist',
                 'alignment',
                 'fontcolor',
+                'internalLink',
+                'externalLink',
                 'insertTable',
                 'code',
             ],
@@ -288,6 +296,8 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     TablePlugin,
                     TableToolbarPlugin,
                     FontPlugin,
+                    ExternalLinkPlugin,
+                    InternalLinkPlugin,
                     ...pluginRegistry.plugins,
                 ],
                 ...configRegistry.configs.reduce((previousConfig, config) => {
