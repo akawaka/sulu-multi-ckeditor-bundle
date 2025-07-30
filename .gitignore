@@ -28,3 +28,16 @@ yarn-error.log*
 # Temporary files
 *.tmp
 *.temp
+
+# Test Application
+/tests/Application/vendor/
+/tests/Application/composer.lock
+/tests/Application/node_modules/
+/tests/Application/var/
+/tests/Application/public/uploads/
+/tests/Application/public/build/
+/tests/Application/.env.local
+/tests/Application/assets/admin/package-lock.json
+
+# Docker
+.docker/

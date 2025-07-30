@@ -1,0 +1,119 @@
+{
+    "name": "akawaka/sulu-multi-ckeditor-bundle-test",
+    "type": "project",
+    "description": "Test application for Sulu Multi CKEditor Bundle",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "akawaka/sulu-multi-ckeditor-bundle": "dev-main",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-fixtures-bundle": "^3.6 || ^4.0",
+        "friendsofsymfony/http-cache-bundle": "^3.0",
+        "handcraftedinthealps/zendsearch": "^2.1",
+        "jackalope/jackalope-doctrine-dbal": "^1.10 || ^2.0",
+        "phpcr/phpcr-migrations-bundle": "^1.6",
+        "phpcr/phpcr-shell": "^1.6",
+        "scheb/2fa-bundle": "^7.3",
+        "scheb/2fa-email": "^7.3",
+        "scheb/2fa-trusted-device": "^7.3",
+        "stof/doctrine-extensions-bundle": "^1.11",
+        "sulu/sulu": "~2.6.10",
+        "symfony/config": "^7.3",
+        "symfony/dotenv": "^7.3",
+        "symfony/flex": "^1.17 || ^2.0",
+        "symfony/framework-bundle": "^7.3",
+        "symfony/mailer": "^7.3",
+        "symfony/monolog-bridge": "^7.3",
+        "symfony/monolog-bundle": "^3.4",
+        "symfony/runtime": "^7.3",
+        "symfony/security-bundle": "^7.3",
+        "symfony/twig-bundle": "^7.3"
+    },
+    "require-dev": {
+        "jangregor/phpstan-prophecy": "^2.0",
+        "php-cs-fixer/shim": "^3.58",
+        "phpspec/prophecy-phpunit": "^2.1",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0",
+        "phpunit/phpunit": "^11.5 || ^12.1",
+        "rector/rector": "^2.0",
+        "sulu/sulu-rector": "^2.0",
+        "symfony/browser-kit": "^7.3",
+        "symfony/css-selector": "^7.3",
+        "symfony/debug-bundle": "^7.3",
+        "symfony/error-handler": "^7.3",
+        "symfony/thanks": "^1.2",
+        "symfony/web-profiler-bundle": "^7.3",
+        "vincentlanglet/twig-cs-fixer": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "symfony/thanks": true,
+            "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../.."
+        }
+    ],
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "bin/websiteconsole cache:clear": "php-script",
+            "bin/adminconsole sulu:media:init": "php-script",
+            "bin/adminconsole massive:search:init": "php-script"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "require": "^7.0"
+        }
+    }
+}

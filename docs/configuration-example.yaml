@@ -1,0 +1,130 @@
+# Configuration example for Akawaka Sulu Multi CKEditor Bundle
+akawaka_sulu_multi_text_editor:
+    configs:
+        # Default configuration with all features
+        default:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                sulu_link: true
+                ul: true
+                ol: true
+                h1: false
+                h2: true
+                h3: true
+                h4: true
+                h5: true
+                h6: true
+                table: true
+                code: true
+                blockquote: true
+                strong: true
+                em: true
+                u: false
+                s: false
+                sub: false
+                sup: false
+                br: true
+                hr: false
+            toolbar:
+                - 'heading'
+                - '|'
+                - 'bold'
+                - 'italic'
+                - 'link'
+                - '|'
+                - 'bulletedList'
+                - 'numberedList'
+                - '|'
+                - 'outdent'
+                - 'indent'
+                - '|'
+                - 'insertTable'
+                - 'blockQuote'
+                - 'undo'
+                - 'redo'
+
+        # Minimal configuration for simple text
+        minimal:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                strong: true
+                em: true
+                br: true
+            toolbar:
+                - 'bold'
+                - 'italic'
+                - 'link'
+
+
+        # Rich configuration with all features
+        rich:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                sulu_link: true
+                ul: true
+                ol: true
+                h1: true
+                h2: true
+                h3: true
+                h4: true
+                h5: true
+                h6: true
+                table: true
+                code: true
+                blockquote: true
+                strong: true
+                em: true
+                u: true
+                s: true
+                sub: true
+                sup: true
+                br: true
+                hr: true
+            toolbar:
+                - 'heading'
+                - '|'
+                - 'fontSize'
+                - 'fontColor'
+                - 'fontBackgroundColor'
+                - '|'
+                - 'bold'
+                - 'italic'
+                - 'underline'
+                - 'strikethrough'
+                - 'subscript'
+                - 'superscript'
+                - '|'
+                - 'link'
+                - '|'
+                - 'bulletedList'
+                - 'numberedList'
+                - '|'
+                - 'outdent'
+                - 'indent'
+                - '|'
+                - 'insertTable'
+                - 'blockQuote'
+                - 'codeBlock'
+                - 'horizontalLine'
+                - '|'
+                - 'undo'
+                - 'redo'
+
+        # Future: TipTap editor configuration
+        tiptap_default:
+            editor: tiptap
+            tags:
+                p: true
+                a: true
+                strong: true
+                em: true
+                ul: true
+                ol: true
+                h2: true
+                h3: true
