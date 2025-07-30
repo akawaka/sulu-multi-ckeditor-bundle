@@ -1,4 +1,8 @@
 // @flow
+import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
+import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
+import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
+import CodeBlockPlugin from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import React from 'react';
 import log from 'loglevel';
 import AlignmentPlugin from '@ckeditor/ckeditor5-alignment/src/alignment';
@@ -22,6 +26,9 @@ import ExternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/E
 import InternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin";
 import configRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/configRegistry';
 import pluginRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/pluginRegistry';
+// NOTE: Import getEditorConfig from your main app.js file where you implement the config functions
+// import {getEditorConfig} from '../app';
+// For now, you can implement this function inline or import it from wherever you define it
 import type {IObservableValue} from 'mobx/lib/mobx';
 import type {ElementRef} from 'react';
 
@@ -39,10 +46,7 @@ type Props = {|
 /**
  * Composant CKEditor5 personnalisé avec support des configurations multiples
  * 
- * Gère trois types de configuration :
- * - minimal : bold, italic, listes
- * - simple : + headings, underline, font color  
- * - default : configuration complète avec alignment, table, code, etc.
+ * Lit les configurations depuis le YAML via l'Admin backend
  */
 export default class CKEditor5Configurable extends React.Component<Props> {
     containerRef: ?ElementRef<'div'>;
@@ -80,6 +84,80 @@ export default class CKEditor5Configurable extends React.Component<Props> {
             },
         };
 
+        // Get configuration from YAML via backend
+        const yamlConfig = getEditorConfig(configType);
+        
+        if (yamlConfig && yamlConfig.toolbar) {
+            // Convert YAML toolbar config to CKEditor format
+            const toolbar = yamlConfig.toolbar; // Keep separators
+            
+            return {
+                ...baseConfig,
+                toolbar: toolbar,
+                heading: this.buildHeadingConfig(formats, yamlConfig),
+                fontColor: this.buildFontColorConfig(yamlConfig),
+                table: yamlConfig.table || {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow', 
+                        'mergeTableCells',
+                    ],
+                },
+            };
+        }
+
+        // Fallback to hardcoded configs if YAML not available
+        return this.getFallbackConfig(configType, formats, locale, baseConfig);
+    }
+
+    buildHeadingConfig(formats: Array<string>, yamlConfig: Object) {
+        const options = [
+            {
+                model: 'paragraph',
+                title: translate('sulu_admin.paragraph'),
+                class: 'ck-heading_paragraph',
+            }
+        ];
+
+        // Add headings based on formats and YAML tags
+        if (yamlConfig.tags) {
+            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(heading => {
+                const headingNum = heading.charAt(1);
+                if (formats.includes(heading) && yamlConfig.tags[heading]) {
+                    options.push({
+                        model: `heading${headingNum}`,
+                        view: heading,
+                        title: translate(`sulu_admin.heading${headingNum}`),
+                        class: `ck-heading_heading${headingNum}`,
+                    });
+                }
+            });
+        }
+
+        return { options };
+    }
+
+    buildFontColorConfig(yamlConfig: Object) {
+        // Default font colors - could be made configurable via YAML
+        return {
+            colors: [
+                {color: 'hsl(0, 0%, 0%)', label: 'Black'},
+                {color: 'hsl(0, 0%, 30%)', label: 'Dim grey'},
+                {color: 'hsl(0, 0%, 60%)', label: 'Grey'},
+                {color: 'hsl(0, 0%, 90%)', label: 'Light grey'},
+                {color: 'hsl(0, 0%, 100%)', label: 'White', hasBorder: true},
+                {color: 'hsl(0, 75%, 60%)', label: 'Red'},
+                {color: 'hsl(30, 75%, 60%)', label: 'Orange'},
+                {color: 'hsl(60, 75%, 60%)', label: 'Yellow'},
+                {color: 'hsl(90, 75%, 60%)', label: 'Light green'},
+            ],
+            columns: 9,
+            documentColors: 0,
+            colorPicker: false,
+        };
+    }
+
+    getFallbackConfig(configType: string, formats: Array<string>, locale: ?IObservableValue<string>, baseConfig: Object) {
         if (configType === 'minimal') {
             return {
                 ...baseConfig,
@@ -113,7 +191,7 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     'underline',
                     'bulletedlist',
                     'numberedlist',
-                    'fontcolor',
+                    'fontColor',
                     'internalLink',
                     'externalLink',
                 ],
@@ -138,22 +216,7 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                         } : undefined,
                     ].filter((entry) => entry !== undefined),
                 },
-                fontColor: {
-                    colors: [
-                        {color: 'hsl(0, 0%, 0%)', label: 'Black'},
-                        {color: 'hsl(0, 0%, 30%)', label: 'Dim grey'},
-                        {color: 'hsl(0, 0%, 60%)', label: 'Grey'},
-                        {color: 'hsl(0, 0%, 90%)', label: 'Light grey'},
-                        {color: 'hsl(0, 0%, 100%)', label: 'White', hasBorder: true},
-                        {color: 'hsl(0, 75%, 60%)', label: 'Red'},
-                        {color: 'hsl(30, 75%, 60%)', label: 'Orange'},
-                        {color: 'hsl(60, 75%, 60%)', label: 'Yellow'},
-                        {color: 'hsl(90, 75%, 60%)', label: 'Light green'},
-                    ],
-                    columns: 9,
-                    documentColors: 0,
-                    colorPicker: false,
-                },
+                fontColor: this.buildFontColorConfig({}),
             };
         }
 
@@ -171,7 +234,7 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                 'bulletedlist',
                 'numberedlist',
                 'alignment',
-                'fontcolor',
+                'fontColor',
                 'internalLink',
                 'externalLink',
                 'insertTable',
@@ -229,28 +292,7 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     'mergeTableCells',
                 ],
             },
-            fontColor: {
-                colors: [
-                    {color: 'hsl(0, 0%, 0%)', label: 'Black'},
-                    {color: 'hsl(0, 0%, 30%)', label: 'Dim grey'},
-                    {color: 'hsl(0, 0%, 60%)', label: 'Grey'},
-                    {color: 'hsl(0, 0%, 90%)', label: 'Light grey'},
-                    {color: 'hsl(0, 0%, 100%)', label: 'White', hasBorder: true},
-                    {color: 'hsl(0, 75%, 60%)', label: 'Red'},
-                    {color: 'hsl(30, 75%, 60%)', label: 'Orange'},
-                    {color: 'hsl(60, 75%, 60%)', label: 'Yellow'},
-                    {color: 'hsl(90, 75%, 60%)', label: 'Light green'},
-                    {color: 'hsl(120, 75%, 60%)', label: 'Green'},
-                    {color: 'hsl(150, 75%, 60%)', label: 'Aquamarine'},
-                    {color: 'hsl(180, 75%, 60%)', label: 'Turquoise'},
-                    {color: 'hsl(210, 75%, 60%)', label: 'Light blue'},
-                    {color: 'hsl(240, 75%, 60%)', label: 'Blue'},
-                    {color: 'hsl(270, 75%, 60%)', label: 'Purple'},
-                ],
-                columns: 9,
-                documentColors: 0,
-                colorPicker: false,
-            },
+            fontColor: this.buildFontColorConfig({}),
         };
     }
 
@@ -284,7 +326,9 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     AlignmentPlugin,
                     BoldPlugin,
                     EssentialsPlugin,
+                    ExternalLinkPlugin,
                     HeadingPlugin,
+                    InternalLinkPlugin,
                     ItalicPlugin,
                     ListPlugin,
                     ParagraphPlugin,
@@ -296,8 +340,10 @@ export default class CKEditor5Configurable extends React.Component<Props> {
                     TablePlugin,
                     TableToolbarPlugin,
                     FontPlugin,
-                    ExternalLinkPlugin,
-                    InternalLinkPlugin,
+                    FontSizePlugin,
+                    BlockQuotePlugin,
+                    HorizontalLinePlugin,
+                    CodeBlockPlugin,
                     ...pluginRegistry.plugins,
                 ],
                 ...configRegistry.configs.reduce((previousConfig, config) => {

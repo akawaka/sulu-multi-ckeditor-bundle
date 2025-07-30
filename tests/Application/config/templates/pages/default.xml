@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<template xmlns="http://schemas.sulu.io/template/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/template-1.0.xsd">
+
+    <key>default</key>
+
+    <view>pages/default</view>
+    <controller>Sulu\Bundle\WebsiteBundle\Controller\DefaultController::indexAction</controller>
+    <cacheLifetime>604800</cacheLifetime>
+
+    <meta>
+        <title lang="en">Default</title>
+        <title lang="de">Standard</title>
+    </meta>
+
+    <properties>
+        <property name="title" type="text_line" mandatory="true">
+            <meta>
+                <title lang="en">Title</title>
+                <title lang="de">Titel</title>
+            </meta>
+            <params>
+                <param name="headline" value="true"/>
+            </params>
+
+            <tag name="sulu.rlp.part"/>
+        </property>
+
+        <property name="url" type="resource_locator" mandatory="true">
+            <meta>
+                <title lang="en">Resourcelocator</title>
+                <title lang="de">Adresse</title>
+            </meta>
+
+            <tag name="sulu.rlp"/>
+        </property>
+
+        <property name="article" type="text_editor">
+            <meta>
+                <title lang="en">Article</title>
+                <title lang="de">Artikel</title>
+            </meta>
+        </property>
+        <!-- Minimal editor: bold, italic, link -->
+        <property name="intro" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Introduction</title>
+            </meta>
+            <params>
+                <param name="config" value="minimal"/>
+            </params>
+        </property>
+
+        <!-- Default editor: standard features -->
+        <property name="content" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Content</title>
+            </meta>
+            <params>
+                <param name="config" value="default"/>
+            </params>
+        </property>
+
+        <!-- Rich editor: all features -->
+        <property name="description" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Description</title>
+            </meta>
+            <params>
+                <param name="config" value="rich"/>
+            </params>
+        </property>
+
+        <!-- With stripped paragraph tags -->
+        <property name="summary" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Summary</title>
+            </meta>
+            <params>
+                <param name="config" value="minimal"/>
+                <param name="strip_p_tags" value="true"/>
+            </params>
+        </property>
+    </properties>
+</template>

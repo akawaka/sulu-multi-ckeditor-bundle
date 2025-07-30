@@ -1,0 +1,95 @@
+akawaka_sulu_multi_text_editor:
+    configs:
+        # Default configuration
+        default:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                sulu_link: true
+                ul: true
+                ol: true
+                h2: true
+                h3: true
+                h4: true
+                table: true
+                strong: true
+                em: true
+            toolbar:
+                - 'heading'
+                - '|'
+                - 'bold'
+                - 'italic'
+                - 'externalLink'
+                - 'internalLink'
+                - '|'
+                - 'bulletedlist'
+                - 'numberedlist'
+                - '|'
+                - 'insertTable'
+
+        # Minimal configuration
+        minimal:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                strong: true
+                em: true
+            toolbar:
+                - 'bold'
+                - 'italic'
+
+                - 'numberedlist'
+                - 'heading'
+                - 'insertTable'
+
+        # Rich configuration
+        rich:
+            editor: ckeditor
+            tags:
+                p: true
+                a: true
+                sulu_link: true
+                ul: true
+                ol: true
+                h1: true
+                h2: true
+                h3: true
+                h4: true
+                h5: true
+                h6: false
+                table: true
+                code: true
+                blockquote: true
+                strong: true
+                em: true
+                u: true
+                s: true
+                sub: true
+                sup: true
+                br: true
+                hr: true
+            toolbar:
+                - 'heading'
+                - '|'
+                - 'fontSize'
+                - 'fontColor'
+                - '|'
+                - 'bold'
+                - 'italic'
+                - 'underline'
+                - 'strikethrough'
+                - 'subscript'
+                - 'superscript'
+                - '|'
+                - 'externalLink'
+                - 'internalLink'
+                - '|'
+                - 'bulletedlist'
+                - 'numberedlist'
+                - '|'
+                - 'insertTable'
+                - 'blockQuote'
+                - 'codeBlock'
+                - 'horizontalLine'

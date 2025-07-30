@@ -1,0 +1,76 @@
+services:
+  php:
+    build:
+      context: .
+    volumes:
+      - .:/srv/sulu:rw
+      - vendor:/srv/sulu/vendor
+      - node_modules:/srv/sulu/tests/Application/node_modules
+    environment:
+      - COMPOSER_HOME=/tmp/composer
+      - APP_ENV=dev
+      - APP_SECRET=ThisTokenIsNotSoSecretChangeIt
+      - DATABASE_URL=mysql://sulu:sulu@mysql/sulu_test
+      - SULU_ADMIN_EMAIL=admin@example.com
+      - MAILER_URL=smtp://mailhog:1025
+      - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "git config --global --add safe.directory /srv/sulu &&
+             symfony server:start --dir=tests/Application/public --port=8080 --allow-http --allow-all-ip"
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sulu_test
+      - MYSQL_USER=sulu
+      - MYSQL_PASSWORD=sulu
+    volumes:
+      - mysql-data:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 20s
+      retries: 10
+
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  nodejs:
+    image: node:18-alpine
+    tty: true
+    depends_on:
+      - php
+    working_dir: /srv/sulu
+    volumes:
+      - ./:/srv/sulu:rw
+      - node_modules:/srv/sulu/tests/Application/node_modules
+    command: tail -f /dev/null
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    environment:
+      - MH_STORAGE=maildir
+    ports:
+      - "8025:8025"
+
+volumes:
+    mysql-data:
+    elasticsearch-data:
+    vendor:
+    node_modules:

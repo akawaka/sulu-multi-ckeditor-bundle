@@ -1,2 +1,15 @@
 services:
-    # Empty configuration - services are defined in config/services.yaml
+    # Configurable Text Editor (based on original bundle approach)
+    Akawaka\SuluMultiCKEditorBundle\Content\Type\MultiTextEditorType:
+        arguments:
+            - '@sulu_markup.parser'
+            - 'sulu'
+        tags:
+            - { name: sulu.content.type, alias: configurable_text_editor }
+
+    # Admin class to provide configuration to JS
+    Akawaka\SuluMultiCKEditorBundle\Admin\MultiEditorAdmin:
+        arguments:
+            - '@parameter_bag'
+        tags:
+            - { name: sulu.admin }

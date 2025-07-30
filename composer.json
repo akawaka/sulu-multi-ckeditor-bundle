@@ -10,9 +10,10 @@
         "source": "https://github.com/akawaka/sulu-multi-ckeditor-bundle"
     },
     "require": {
-        "php": "^8.1",
-        "sulu/sulu": "^2.5",
-        "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0"
+        "php": "^8.2",
+        "sulu/sulu": "^2.5.20",
+        "symfony/framework-bundle": "^6.4 || ^7.0",
+        "jackalope/jackalope-doctrine-dbal": "^1.7 || ^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0",
