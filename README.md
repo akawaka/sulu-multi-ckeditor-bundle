@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/php-%5E8.1-blue)](https://php.net/)
-[![Sulu](https://img.shields.io/badge/sulu-%5E2.5-green)](https://sulu.io/)
+[![Sulu](https://img.shields.io/badge/sulu-%5E2.5%20%7C%7C%20%5E3.0-green)](https://sulu.io/)
 
 Multiple CKEditor configurations for Sulu CMS - Provides different editor configurations within the same Sulu installation using YAML configuration without JavaScript rebuilds.
 
@@ -32,7 +32,7 @@ The Sulu Multi CKEditor Bundle addresses Sulu's limitation of having a single gl
 ## Requirements
 
 - **PHP**: ^8.1
-- **Sulu CMS**: ^2.5
+- **Sulu CMS**: ^2.5 || ^3.0
 - **Symfony**: ^6.4 || ^7.0
 - **Node.js**: ^18 (for asset compilation)
 
@@ -158,84 +158,34 @@ akawaka_sulu_multi_text_editor:
                 - 'horizontalLine'
 ```
 
-### Step 4: Copy Frontend Assets
+### Step 4: Install the JavaScript Package
 
-Copy the required JavaScript components to your project:
+Add the bundle's JS package to your `assets/admin/package.json`:
 
-```bash
-# Copy the JavaScript components from the bundle to your project
-cp -r vendor/akawaka/sulu-multi-ckeditor-bundle/assets/admin/* assets/admin/
-
-# Or manually copy these files:
-# - assets/admin/adapters/CKEditor5Configurable.js
-# - assets/admin/components/CKEditor5Configurable.js  
-# - assets/admin/fields/ConfigurableTextEditor.js
+```json
+{
+    "dependencies": {
+        "sulu-multi-ckeditor-bundle": "file:../../vendor/akawaka/sulu-multi-ckeditor-bundle/assets/admin"
+    }
+}
 ```
 
-### Step 5: Register Components in Your App
-
-Add this code to your `assets/admin/app.js`:
+Then import it in your `assets/admin/app.js`:
 
 ```javascript
-import {textEditorRegistry, fieldRegistry} from 'sulu-admin-bundle/containers';
-import {initializer} from 'sulu-admin-bundle/services';
-
-// Import the copied components
-import CKEditor5ConfigurableAdapter from './adapters/CKEditor5Configurable';
-import ConfigurableTextEditor from './fields/ConfigurableTextEditor';
-
-// Config management (simple implementation)
-let editorConfigs = {};
-
-export const setEditorConfigs = (configs) => {
-    editorConfigs = configs;
-};
-
-export const getEditorConfig = (configType = 'default') => {
-    return editorConfigs[configType] || editorConfigs['default'] || {};
-};
-
-// Initialize the bundle when config is received from backend
-initializer.addUpdateConfigHook('akawaka_sulu_multi_text_editor', (config, initialized) => {
-    if (config && config.configs) {
-        setEditorConfigs(config.configs);
-    }
-    
-    if (initialized) {
-        return;
-    }
-});
-
-// Register the adapter and field type
-textEditorRegistry.add('ckeditor5_configurable', CKEditor5ConfigurableAdapter);
-fieldRegistry.add('configurable_text_editor', ConfigurableTextEditor);
+import 'sulu-multi-ckeditor-bundle';
 ```
 
-### Step 6: Update Component Import
-
-In the copied `assets/admin/components/CKEditor5Configurable.js`, update the import:
-
-```javascript
-// Change this line:
-// NOTE: Import getEditorConfig from your main app.js file where you implement the config functions
-
-// To this:
-import {getEditorConfig} from '../app';
-```
-
-### Step 7: Build Assets
+Install the dependency and rebuild the admin assets:
 
 ```bash
-# Build your project assets
-npm run build
-# or
-yarn build
-
-# Don't forget to run Sulu's build command
-php bin/console sulu:build --env=prod
+npm install
+php bin/console sulu:admin:update-build
 ```
 
-### Step 8: Clear Cache
+> See [Sulu documentation](https://docs.sulu.io/en/latest/book/extend-admin.html) for details on `sulu:admin:update-build`.
+
+### Step 5: Clear Cache
 
 ```bash
 php bin/console cache:clear
@@ -419,11 +369,13 @@ src/
 │       └── multi-text-editor.html.twig   # Twig template
 └── MultiEditorBundle.php                 # Bundle class
 
-assets/admin/                              # For end users to copy
+assets/admin/                              # npm package (sulu-multi-ckeditor-bundle)
+├── index.js                              # Package entry point (auto-registers everything)
+├── config.js                             # Editor config state management
+├── package.json                          # Package metadata
 ├── adapters/CKEditor5Configurable.js     # Template parameter extraction
 ├── components/CKEditor5Configurable.js   # CKEditor5 component
-├── fields/ConfigurableTextEditor.js      # Field type registration
-└── app.example.js                        # Integration example
+└── fields/ConfigurableTextEditor.js      # Field type registration
 
 tests/Application/                         # For bundle development only
 └── assets/admin/                         # Development/testing assets

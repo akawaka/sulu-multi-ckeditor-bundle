@@ -1,13 +1,6 @@
 services:
-    # Configurable Text Editor (based on original bundle approach)
-    Akawaka\SuluMultiCKEditorBundle\Content\Type\MultiTextEditorType:
-        arguments:
-            - '@sulu_markup.parser'
-            - 'sulu'
-        tags:
-            - { name: sulu.content.type, alias: configurable_text_editor }
-
-    # Admin class to provide configuration to JS
+    # Admin class to provide editor configurations to JS frontend
+    # This service is common to both Sulu 2.x and 3.0
     Akawaka\SuluMultiCKEditorBundle\Admin\MultiEditorAdmin:
         arguments:
             - '@parameter_bag'

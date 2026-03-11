@@ -1,5 +1,19 @@
 services:
-  php:
+  traefik:
+    image: traefik:v2.11
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8090:8080"  # Traefik dashboard: http://localhost:8090
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  php-v2:
     build:
       context: .
     volumes:
@@ -17,11 +31,55 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    ports:
-      - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.php-v2.rule=Host(`v2.localhost`)"
+      - "traefik.http.routers.php-v2.entrypoints=web"
+      - "traefik.http.services.php-v2.loadbalancer.server.port=8080"
     command: >
       sh -c "git config --global --add safe.directory /srv/sulu &&
-             symfony server:start --dir=tests/Application/public --port=8080 --allow-http --allow-all-ip"
+             symfony server:stop --dir=tests/Application/public 2>/dev/null || true;
+             rm -f /root/.symfony5/var/*.pid 2>/dev/null || true;
+             if [ -f tests/Application/vendor/autoload.php ]; then
+               symfony server:start --dir=tests/Application/public --port=8080 --allow-http --allow-all-ip --no-tls;
+             else
+               echo 'Vendor not installed. Run make install first. Keeping container alive...' &&
+               tail -f /dev/null;
+             fi"
+
+  php-v3:
+    build:
+      context: .
+    volumes:
+      - .:/srv/sulu:rw
+      - vendor-v3:/srv/sulu/tests/Application3/vendor
+      - node_modules-v3:/srv/sulu/tests/Application3/node_modules
+    environment:
+      - COMPOSER_HOME=/tmp/composer
+      - APP_ENV=dev
+      - APP_SECRET=ThisTokenIsNotSoSecretChangeIt
+      - DATABASE_URL=mysql://root:root@mysql:3306/sulu_v3?serverVersion=8.0&charset=utf8mb4
+      - SULU_ADMIN_EMAIL=admin@example.com
+      - MAILER_URL=smtp://mailhog:1025
+      - PHP_DATE_TIMEZONE=${PHP_DATE_TIMEZONE:-UTC}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.php-v3.rule=Host(`v3.localhost`)"
+      - "traefik.http.routers.php-v3.entrypoints=web"
+      - "traefik.http.services.php-v3.loadbalancer.server.port=8080"
+    command: >
+      sh -c "git config --global --add safe.directory /srv/sulu &&
+             symfony server:stop --dir=tests/Application3/public 2>/dev/null || true;
+             rm -f /root/.symfony5/var/*.pid 2>/dev/null || true;
+             if [ -f tests/Application3/vendor/autoload.php ]; then
+               symfony server:start --dir=tests/Application3/public --port=8080 --allow-http --allow-all-ip --no-tls;
+             else
+               echo 'Vendor not installed. Run make install-v3 first. Keeping container alive...' &&
+               tail -f /dev/null;
+             fi"
 
   mysql:
     image: mysql:8.0
@@ -55,11 +113,13 @@ services:
     image: node:18-alpine
     tty: true
     depends_on:
-      - php
+      - php-v2
     working_dir: /srv/sulu
     volumes:
       - ./:/srv/sulu:rw
+      - vendor-v3:/srv/sulu/tests/Application3/vendor
       - node_modules:/srv/sulu/tests/Application/node_modules
+      - node_modules-v3:/srv/sulu/tests/Application3/node_modules
     command: tail -f /dev/null
 
   mailhog:
@@ -73,4 +133,6 @@ volumes:
     mysql-data:
     elasticsearch-data:
     vendor:
+    vendor-v3:
     node_modules:
+    node_modules-v3:
