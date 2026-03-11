@@ -138,4 +138,68 @@ status: ## Show service status
 help: ## Show all make tasks (default)
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+##
+## Sulu 3.0 (Application3)
+##---------------------------------------------------------------------------
+APP3 = tests/Application3
+DB_V3 = mysql://root:root@mysql:3306/sulu_v3?serverVersion=8.0&charset=utf8mb4
+EXEC_V3 = docker-compose exec -e DATABASE_URL="$(DB_V3)" php
+CONSOLE_V3 = $(EXEC_V3) php -d memory_limit=-1 $(APP3)/bin/adminconsole
+WCONSOLE_V3 = $(EXEC_V3) php -d memory_limit=-1 $(APP3)/bin/websiteconsole
+
+.PHONY: install-v3 serve-v3 stop-v3 admin-v3 build-v3 watch-v3 db-reset-v3 console-v3
+
+install-v3: start ## Install Sulu 3.0 test application
+	@echo " Installing Sulu 3.0 test application..."
+	sudo chmod -Rf 777 $(APP3)/var || true
+	sudo chmod -Rf 777 $(APP3)/public/uploads || true
+	docker-compose exec php git config --global --add safe.directory /srv/sulu
+	docker-compose exec php sh -c "php -d memory_limit=-1 /usr/bin/composer install --no-interaction -d $(APP3)"
+	@echo " Setting up database..."
+	$(CONSOLE_V3) doctrine:database:create --if-not-exists -e dev
+	$(CONSOLE_V3) doctrine:schema:create -e dev
+	$(CONSOLE_V3) sulu:build dev --destroy --no-interaction
+	@echo " Fixing Loupe index permissions..."
+	sudo chmod -Rf 777 $(APP3)/var || true
+	@echo " Installing assets..."
+	$(CONSOLE_V3) assets:install $(APP3)/public -e dev
+	@echo " Building admin JS assets..."
+	$(CONSOLE_V3) sulu:admin:update-build --no-interaction -e dev
+	$(EXEC_V3) npm install --prefix $(APP3)/assets/admin
+	$(EXEC_V3) npm run build --prefix $(APP3)/assets/admin
+	@echo " Warming up cache..."
+	$(CONSOLE_V3) cache:clear -e dev
+	$(WCONSOLE_V3) cache:clear -e dev
+	@echo " Installation complete! Run 'make serve-v3' to start the server on http://localhost:8083"
+
+serve-v3: ## Start Sulu 3.0 web server on port 8083
+	docker-compose exec -d -e DATABASE_URL="$(DB_V3)" php symfony server:start --dir=$(APP3)/public --port=8083 --allow-http --allow-all-ip --no-tls
+	@echo " Sulu 3.0 running on http://localhost:8083"
+	@echo " Admin: http://localhost:8083/admin"
+
+stop-v3: ## Stop Sulu 3.0 web server
+	docker-compose exec php symfony server:stop --dir=$(APP3)/public || true
+	@echo " Sulu 3.0 server stopped"
+
+admin-v3: ## Create Sulu 3.0 admin user
+	$(CONSOLE_V3) sulu:user:create admin admin admin@example.com Admin Admin en admin
+
+build-v3: ## Build Sulu 3.0 frontend assets
+	$(EXEC_V3) npm run build --prefix $(APP3)/assets/admin
+
+watch-v3: ## Watch Sulu 3.0 frontend assets
+	$(EXEC_V3) npm run watch --prefix $(APP3)/assets/admin
+
+db-reset-v3: ## Reset Sulu 3.0 database
+	@echo " Resetting Sulu 3.0 database..."
+	$(CONSOLE_V3) doctrine:database:drop --force --if-exists -e dev
+	$(CONSOLE_V3) doctrine:database:create -e dev
+	$(CONSOLE_V3) doctrine:schema:create -e dev
+	$(CONSOLE_V3) sulu:build dev --destroy --no-interaction
+	@echo " Fixing Loupe index permissions..."
+	sudo chmod -Rf 777 $(APP3)/var || true
+
+console-v3: ## Run a Sulu 3.0 admin console command (usage: make console-v3 CMD="cache:clear")
+	$(CONSOLE_V3) $(CMD)
+
 -include Makefile.local

@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<template xmlns="http://schemas.sulu.io/template/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/template-1.0.xsd">
+
+    <key>default</key>
+
+    <view>pages/default</view>
+    <controller>Sulu\Content\UserInterface\Controller\Website\ContentController::indexAction</controller>
+    <cacheLifetime>604800</cacheLifetime>
+
+    <meta>
+        <title lang="en">Default</title>
+        <title lang="de">Standard</title>
+    </meta>
+
+    <properties>
+        <property name="title" type="text_line" mandatory="true">
+            <meta>
+                <title lang="en">Title</title>
+                <title lang="de">Titel</title>
+            </meta>
+            <params>
+                <param name="headline" value="true"/>
+            </params>
+
+            <tag name="sulu.rlp.part"/>
+        </property>
+
+        <property name="url" type="route" mandatory="true">
+            <meta>
+                <title lang="en">Resourcelocator</title>
+                <title lang="de">Adresse</title>
+            </meta>
+
+            <tag name="sulu.rlp"/>
+        </property>
+
+        <property name="content" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Content</title>
+                <title lang="de">Inhalt</title>
+            </meta>
+            <params>
+                <param name="config" value="default"/>
+            </params>
+        </property>
+
+        <property name="content_minimal" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Minimal Editor</title>
+                <title lang="de">Minimaler Editor</title>
+            </meta>
+            <params>
+                <param name="config" value="minimal"/>
+            </params>
+        </property>
+
+        <property name="content_rich" type="configurable_text_editor">
+            <meta>
+                <title lang="en">Rich Editor</title>
+                <title lang="de">Erweiterter Editor</title>
+            </meta>
+            <params>
+                <param name="config" value="rich"/>
+            </params>
+        </property>
+    </properties>
+</template>

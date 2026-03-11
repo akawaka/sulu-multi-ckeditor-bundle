@@ -106,20 +106,24 @@ This release introduces a **fundamental architecture change** from JavaScript-ba
 - **Configuration Examples**: Comprehensive YAML configuration examples
 - **Troubleshooting**: Dedicated troubleshooting section with common issues
 
-### 🔄 **Migration from 0.1.1**
+## [1.0.0] - 2026-03-11
 
-Users upgrading from 0.1.1 must:
-1. Remove old JavaScript-based configurations
-2. Create YAML configuration files
-3. Update content type references from `multi_text_editor` to `configurable_text_editor`
-4. Reinstall and reconfigure the bundle following new instructions
+### Added
+- Support for Sulu 3.0 in the same package as Sulu 2.x (dual compatibility).
+- Conditional service loading: `services_legacy.yaml` for Sulu 2.x content type registration.
+- `tests/Application3/` — a Sulu 3.0 test application scaffolded from the official 3.0.4 skeleton.
+- Makefile targets for Sulu 3.0: `install-v3`, `serve-v3`, `build-v3`, `watch-v3`, `db-reset-v3`.
 
-### **Benefits of New Architecture**
-- **No JS Rebuilds**: Change configurations without recompiling assets
-- **Centralized Management**: All configurations in one place
-- **Better Validation**: Schema-based configuration validation
-- **Scalability**: Support for unlimited editor configurations
-- **Security**: Server-side HTML tag filtering and validation
+### Fixed
+- Fixed a JS import in `assets/admin/components/CKEditor5Configurable.js` where `getEditorConfig` was commented out, causing a blank admin page in Sulu 3.0.
+- Loupe (SQLite) index permissions issue in `tests/Application3/var` on asset build; added `chmod` fix in Makefile for v3 build steps.
+
+### Changed
+- Updated `composer.json` constraints to support both Sulu 2.x and Sulu 3.0: `"sulu/sulu": "^2.5.20 || ^3.0"`.
+- Admin assets: v3 imports load directly from bundle assets (no longer require local copies in all cases).
+
+### BREAKING CHANGES
+- `services.yaml` no longer contains the PHP content type registration for Sulu 2.x. The content type service was moved to `src/Resources/config/services_legacy.yaml` and is loaded conditionally by the bundle extension. This is a breaking change for consumers that relied on the content type being defined in the bundle's `services.yaml` by default.
 
 ## [Unreleased]
 

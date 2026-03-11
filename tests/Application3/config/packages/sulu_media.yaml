@@ -1,0 +1,6 @@
+sulu_media:
+    format_manager:
+        default_imagine_options:
+            jpeg_quality: 90
+            webp_quality: 90
+            avif_quality: 90

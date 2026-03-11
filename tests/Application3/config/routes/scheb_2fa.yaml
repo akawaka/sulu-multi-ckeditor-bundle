@@ -1,0 +1,2 @@
+2fa_login_check_admin:
+    path: /admin/2fa_check

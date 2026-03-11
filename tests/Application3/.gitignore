@@ -1,0 +1,40 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
+# web
+/public/bundles
+/public/uploads
+/public/build
+
+# composer
+/composer.phar
+composer.lock
+
+# npm
+package-lock.json
+pnpm-lock.yaml
+bun.lockb
+yarn.lock
+node_modules
+.yarn
+
+# IDEs
+/.idea
+*.iml
+*~
+.web-server-pid
+
+# System files
+.DS_Store

@@ -26,9 +26,7 @@ import ExternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/E
 import InternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin";
 import configRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/configRegistry';
 import pluginRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/pluginRegistry';
-// NOTE: Import getEditorConfig from your main app.js file where you implement the config functions
-// import {getEditorConfig} from '../app';
-// For now, you can implement this function inline or import it from wherever you define it
+import {getEditorConfig} from '../../../src/Resources/js/index';
 import type {IObservableValue} from 'mobx/lib/mobx';
 import type {ElementRef} from 'react';
 

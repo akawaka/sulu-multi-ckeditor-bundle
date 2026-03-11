@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/php-%5E8.1-blue)](https://php.net/)
-[![Sulu](https://img.shields.io/badge/sulu-%5E2.5-green)](https://sulu.io/)
+[![Sulu](https://img.shields.io/badge/sulu-%5E2.5%20%7C%7C%20%5E3.0-green)](https://sulu.io/)
 
 Multiple CKEditor configurations for Sulu CMS - Provides different editor configurations within the same Sulu installation using YAML configuration without JavaScript rebuilds.
 
@@ -32,7 +32,7 @@ The Sulu Multi CKEditor Bundle addresses Sulu's limitation of having a single gl
 ## Requirements
 
 - **PHP**: ^8.1
-- **Sulu CMS**: ^2.5
+- **Sulu CMS**: ^2.5 || ^3.0
 - **Symfony**: ^6.4 || ^7.0
 - **Node.js**: ^18 (for asset compilation)
 
