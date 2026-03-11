@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+// we are not allowed to load the autoloader here to get constant because symfony/runtime does else not work correctly
+$suluContext = 'website';
+
+return include __DIR__ . DIRECTORY_SEPARATOR. 'console.php';

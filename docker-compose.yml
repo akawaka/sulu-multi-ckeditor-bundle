@@ -5,7 +5,9 @@ services:
     volumes:
       - .:/srv/sulu:rw
       - vendor:/srv/sulu/vendor
+      - vendor-v3:/srv/sulu/tests/Application3/vendor
       - node_modules:/srv/sulu/tests/Application/node_modules
+      - node_modules-v3:/srv/sulu/tests/Application3/node_modules
     environment:
       - COMPOSER_HOME=/tmp/composer
       - APP_ENV=dev
@@ -19,9 +21,17 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+      - "8083:8083"
     command: >
       sh -c "git config --global --add safe.directory /srv/sulu &&
-             symfony server:start --dir=tests/Application/public --port=8080 --allow-http --allow-all-ip"
+             symfony server:stop --dir=tests/Application/public 2>/dev/null || true;
+             rm -f /root/.symfony5/var/*.pid 2>/dev/null || true;
+             if [ -f tests/Application/vendor/autoload.php ]; then
+               symfony server:start --dir=tests/Application/public --port=8080 --allow-http --allow-all-ip --no-tls;
+             else
+               echo 'Vendor not installed. Run make install first. Keeping container alive...' &&
+               tail -f /dev/null;
+             fi"
 
   mysql:
     image: mysql:8.0
@@ -60,6 +70,7 @@ services:
     volumes:
       - ./:/srv/sulu:rw
       - node_modules:/srv/sulu/tests/Application/node_modules
+      - node_modules-v3:/srv/sulu/tests/Application3/node_modules
     command: tail -f /dev/null
 
   mailhog:
@@ -73,4 +84,6 @@ volumes:
     mysql-data:
     elasticsearch-data:
     vendor:
+    vendor-v3:
     node_modules:
+    node_modules-v3:

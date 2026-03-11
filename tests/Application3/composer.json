@@ -1,0 +1,109 @@
+{
+    "name": "akawaka/sulu-multi-ckeditor-bundle-test-sulu3",
+    "type": "project",
+    "description": "Test application for Sulu Multi CKEditor Bundle (Sulu 3.0)",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "akawaka/sulu-multi-ckeditor-bundle": "dev-main",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "cmsig/seal-loupe-adapter": "^0.12.2",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-fixtures-bundle": "^3.6 || ^4.0",
+        "friendsofsymfony/http-cache-bundle": "^3.0",
+        "scheb/2fa-bundle": "^7.3",
+        "scheb/2fa-email": "^7.3",
+        "scheb/2fa-trusted-device": "^7.3",
+        "stof/doctrine-extensions-bundle": "^1.11",
+        "sulu/sulu": "~3.0.4",
+        "symfony/config": "^7.4",
+        "symfony/dotenv": "^7.4",
+        "symfony/flex": "^1.17 || ^2.0",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/mailer": "^7.4",
+        "symfony/monolog-bridge": "^7.4",
+        "symfony/monolog-bundle": "^4.0",
+        "symfony/runtime": "^7.4",
+        "symfony/security-bundle": "^7.4",
+        "symfony/twig-bundle": "^7.4"
+    },
+    "require-dev": {
+        "cmsig/seal-memory-adapter": "^0.12.2",
+        "phpunit/phpunit": "^11.5 || ^12.1",
+        "symfony/browser-kit": "^7.4",
+        "symfony/debug-bundle": "^7.4",
+        "symfony/web-profiler-bundle": "^7.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../.."
+        }
+    ],
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "bin/websiteconsole cache:clear": "php-script",
+            "bin/adminconsole sulu:media:init": "php-script"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "bootstrap-test-environment": [
+            "@php bin/adminconsole doctrine:database:drop --if-exists --force --env test",
+            "@php bin/adminconsole doctrine:database:create --env test",
+            "@php bin/adminconsole doctrine:schema:create --env test"
+        ]
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "require": "7.4.*"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
