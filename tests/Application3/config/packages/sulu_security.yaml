@@ -1,0 +1,5 @@
+sulu_security:
+    checker:
+        enabled: true
+    password_policy:
+        enabled: true

@@ -1,0 +1,10 @@
+framework:
+    router:
+        default_uri: '%env(DEFAULT_URI)%'
+
+when@prod: &prod
+    framework:
+        router:
+            strict_requirements: null
+
+when@stage: *prod

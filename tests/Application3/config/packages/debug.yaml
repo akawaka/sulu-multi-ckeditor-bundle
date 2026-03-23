@@ -1,0 +1,7 @@
+when@dev:
+    framework:
+        profiler: { only_exceptions: false }
+
+when@test:
+    framework:
+        profiler: { collect: false }

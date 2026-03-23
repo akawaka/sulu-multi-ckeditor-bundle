@@ -29,7 +29,7 @@ yarn-error.log*
 *.tmp
 *.temp
 
-# Test Application
+# Test Application (Sulu 2.x)
 /tests/Application/vendor/
 /tests/Application/composer.lock
 /tests/Application/node_modules/
@@ -38,6 +38,17 @@ yarn-error.log*
 /tests/Application/public/build/
 /tests/Application/.env.local
 /tests/Application/assets/admin/package-lock.json
+
+# Test Application3 (Sulu 3.0)
+/tests/Application3/vendor/
+/tests/Application3/composer.lock
+/tests/Application3/node_modules/
+/tests/Application3/var/
+/tests/Application3/public/uploads/
+/tests/Application3/public/build/
+/tests/Application3/.env.local
+/tests/Application3/assets/admin/node_modules/
+/tests/Application3/assets/admin/package-lock.json
 
 # Docker
 .docker/
