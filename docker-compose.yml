@@ -110,7 +110,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
 
   nodejs:
-    image: node:18-alpine
+    image: node:20-alpine
     tty: true
     depends_on:
       - php-v2
