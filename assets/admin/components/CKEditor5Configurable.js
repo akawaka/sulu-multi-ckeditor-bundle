@@ -1,26 +1,26 @@
 // @flow
-import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
-import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-import CodeBlockPlugin from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import {BlockQuote} from '@ckeditor/ckeditor5-block-quote/src/blockquote';
+import {FontSize} from '@ckeditor/ckeditor5-font/src/fontsize';
+import {HorizontalLine} from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
+import {CodeBlock} from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import React from 'react';
 import log from 'loglevel';
-import AlignmentPlugin from '@ckeditor/ckeditor5-alignment/src/alignment';
-import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
-import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import StrikethroughPlugin from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline';
-import SubscriptPlugin from '@ckeditor/ckeditor5-basic-styles/src/subscript';
-import SuperscriptPlugin from '@ckeditor/ckeditor5-basic-styles/src/superscript';
-import CodePlugin from '@ckeditor/ckeditor5-basic-styles/src/code';
-import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
-import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-import FontPlugin from '@ckeditor/ckeditor5-font/src/font';
+import {Alignment} from '@ckeditor/ckeditor5-alignment/src/alignment';
+import {Bold} from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import {ClassicEditor} from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import {Essentials} from '@ckeditor/ckeditor5-essentials/src/essentials';
+import {Heading} from '@ckeditor/ckeditor5-heading/src/heading';
+import {Italic} from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import {List} from '@ckeditor/ckeditor5-list/src/list';
+import {Paragraph} from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import {Strikethrough} from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
+import {Underline} from '@ckeditor/ckeditor5-basic-styles/src/underline';
+import {Subscript} from '@ckeditor/ckeditor5-basic-styles/src/subscript';
+import {Superscript} from '@ckeditor/ckeditor5-basic-styles/src/superscript';
+import {Code} from '@ckeditor/ckeditor5-basic-styles/src/code';
+import {Table} from '@ckeditor/ckeditor5-table/src/table';
+import {TableToolbar} from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import {Font} from '@ckeditor/ckeditor5-font/src/font';
 import {translate} from 'sulu-admin-bundle/utils/Translator';
 import ExternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/ExternalLinkPlugin";
 import InternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin";
@@ -68,6 +68,7 @@ export default class CKEditor5Configurable extends React.Component<Props> {
 
     getConfigForType(configType: string, formats: Array<string>, locale: ?IObservableValue<string>) {
         const baseConfig = {
+            licenseKey: 'GPL',
             sulu: {
                 locale: locale && locale.get(),
             },
@@ -321,27 +322,27 @@ export default class CKEditor5Configurable extends React.Component<Props> {
         ClassicEditor
             .create(this.containerRef, {
                 plugins: [
-                    AlignmentPlugin,
-                    BoldPlugin,
-                    EssentialsPlugin,
+                    Alignment,
+                    Bold,
+                    Essentials,
                     ExternalLinkPlugin,
-                    HeadingPlugin,
+                    Heading,
                     InternalLinkPlugin,
-                    ItalicPlugin,
-                    ListPlugin,
-                    ParagraphPlugin,
-                    StrikethroughPlugin,
-                    UnderlinePlugin,
-                    SubscriptPlugin,
-                    SuperscriptPlugin,
-                    CodePlugin,
-                    TablePlugin,
-                    TableToolbarPlugin,
-                    FontPlugin,
-                    FontSizePlugin,
-                    BlockQuotePlugin,
-                    HorizontalLinePlugin,
-                    CodeBlockPlugin,
+                    Italic,
+                    List,
+                    Paragraph,
+                    Strikethrough,
+                    Underline,
+                    Subscript,
+                    Superscript,
+                    Code,
+                    Table,
+                    TableToolbar,
+                    Font,
+                    FontSize,
+                    BlockQuote,
+                    HorizontalLine,
+                    CodeBlock,
                     ...pluginRegistry.plugins,
                 ],
                 ...configRegistry.configs.reduce((previousConfig, config) => {

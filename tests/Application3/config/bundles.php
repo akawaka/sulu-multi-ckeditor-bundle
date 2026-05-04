@@ -46,4 +46,5 @@ return [
     Sulu\CustomUrl\Infrastructure\Symfony\HttpKernel\SuluCustomUrlBundle::class => ['all' => true],
     CmsIg\Seal\Integration\Symfony\SealBundle::class => ['all' => true],
     Akawaka\SuluMultiCKEditorBundle\MultiEditorBundle::class => ['all' => true],
+    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
 ];
