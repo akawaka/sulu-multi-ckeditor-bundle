@@ -1,34 +1,30 @@
 // @flow
-import {BlockQuote} from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import {FontSize} from '@ckeditor/ckeditor5-font/src/fontsize';
-import {HorizontalLine} from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-import {CodeBlock} from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import React from 'react';
 import log from 'loglevel';
-import {Alignment} from '@ckeditor/ckeditor5-alignment/src/alignment';
-import {Bold} from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import {ClassicEditor} from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import {Essentials} from '@ckeditor/ckeditor5-essentials/src/essentials';
-import {Heading} from '@ckeditor/ckeditor5-heading/src/heading';
-import {Italic} from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import {List} from '@ckeditor/ckeditor5-list/src/list';
-import {Paragraph} from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import {Strikethrough} from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import {Underline} from '@ckeditor/ckeditor5-basic-styles/src/underline';
-import {Subscript} from '@ckeditor/ckeditor5-basic-styles/src/subscript';
-import {Superscript} from '@ckeditor/ckeditor5-basic-styles/src/superscript';
-import {Code} from '@ckeditor/ckeditor5-basic-styles/src/code';
-import {Table} from '@ckeditor/ckeditor5-table/src/table';
-import {TableToolbar} from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-import {Font} from '@ckeditor/ckeditor5-font/src/font';
+import {Alignment} from '@ckeditor/ckeditor5-alignment';
+import {Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline} from '@ckeditor/ckeditor5-basic-styles';
+import {BlockQuote} from '@ckeditor/ckeditor5-block-quote';
+import {CodeBlock} from '@ckeditor/ckeditor5-code-block';
+import {ClassicEditor} from '@ckeditor/ckeditor5-editor-classic';
+import {Essentials} from '@ckeditor/ckeditor5-essentials';
+import {Font, FontSize} from '@ckeditor/ckeditor5-font';
+import {Heading} from '@ckeditor/ckeditor5-heading';
+import {HorizontalLine} from '@ckeditor/ckeditor5-horizontal-line';
+import {List} from '@ckeditor/ckeditor5-list';
+import {Paragraph} from '@ckeditor/ckeditor5-paragraph';
+import {Table, TableToolbar} from '@ckeditor/ckeditor5-table';
 import {translate} from 'sulu-admin-bundle/utils/Translator';
-import ExternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/ExternalLinkPlugin";
-import InternalLinkPlugin from "sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin";
+import ExternalLinkPlugin from 'sulu-admin-bundle/containers/CKEditor5/plugins/ExternalLinkPlugin';
+import InternalLinkPlugin from 'sulu-admin-bundle/containers/CKEditor5/plugins/InternalLinkPlugin';
 import configRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/configRegistry';
 import pluginRegistry from 'sulu-admin-bundle/containers/CKEditor5/registries/pluginRegistry';
 import {getEditorConfig} from '../config';
 import type {IObservableValue} from 'mobx/lib/mobx';
 import type {ElementRef} from 'react';
+import '@ckeditor/ckeditor5-block-quote/dist/index.css';
+import '@ckeditor/ckeditor5-code-block/dist/index.css';
+import '@ckeditor/ckeditor5-font/dist/index.css';
+import '@ckeditor/ckeditor5-horizontal-line/dist/index.css';
 
 type Props = {|
     disabled: boolean,
