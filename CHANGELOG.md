@@ -125,6 +125,28 @@ This release introduces a **fundamental architecture change** from JavaScript-ba
 ### BREAKING CHANGES
 - `services.yaml` no longer contains the PHP content type registration for Sulu 2.x. The content type service was moved to `src/Resources/config/services_legacy.yaml` and is loaded conditionally by the bundle extension. This is a breaking change for consumers that relied on the content type being defined in the bundle's `services.yaml` by default.
 
+## [2.0.0] - 2026-05-04
+
+### Changed
+- Upgraded to CKEditor 47 LTS, aligning the bundle with Sulu's CKEditor 47 LTS upgrade (sulu/sulu#8652).
+- Migrated CKEditor plugin imports from default to named exports (e.g. `BoldPlugin` → `Bold`) as required by CKEditor 47.
+- Added `licenseKey: 'GPL'` to the editor configuration.
+- Bumped `sulu/sulu` requirement to `^2.6.23 || ^3.0.6`.
+- Bumped `@ckeditor/ckeditor5-dev-utils` and `@ckeditor/ckeditor5-theme-lark` to `^47.0.0` in the test apps to avoid duplicate CKEditor module trees.
+- Bumped Node.js to 20 in the test environment.
+
+### Fixed
+- Added the missing `sulu-multi-ckeditor-bundle` dependency in the Sulu 3 test app.
+
+## [2.1.0] - 2026-05-27
+
+### Changed
+- Upgraded to CKEditor 48, aligning the bundle with Sulu 2.6.24 / 3.0.7 (sulu/sulu#8833). CKEditor 47.7 LTS broke the `GPL` license key (sulu/sulu#8811), so staying on 47.x was no longer an option for security reasons.
+- Replaced the deprecated `@ckeditor/ckeditor5-*/src/X` subpath imports with package-root named imports (the CKEditor 48 export pattern).
+- Imported the pre-compiled CSS bundles for the plugins not provided by `sulu-admin-bundle` (`block-quote`, `code-block`, `font`, `horizontal-line`).
+- Dropped `@ckeditor/ckeditor5-dev-utils` and `@ckeditor/ckeditor5-theme-lark` from the test apps and declared the extra CKEditor packages explicitly at `^48.1.0`.
+- Bumped `sulu/sulu` requirement to `^2.6.24 || ^3.0.7`.
+
 ## [Unreleased]
 
 ### Planned Features
