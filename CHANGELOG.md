@@ -147,6 +147,11 @@ This release introduces a **fundamental architecture change** from JavaScript-ba
 - Dropped `@ckeditor/ckeditor5-dev-utils` and `@ckeditor/ckeditor5-theme-lark` from the test apps and declared the extra CKEditor packages explicitly at `^48.1.0`.
 - Bumped `sulu/sulu` requirement to `^2.6.24 || ^3.0.7`.
 
+## [2.1.1] - 2026-10-06
+
+### Fixed
+- Capped the `sulu/sulu` requirement to `^2.6.24 || ~3.0.7`. Sulu 3.1 replaces the `plugins` and `configs` properties of the CKEditor plugin and config registries with `getPlugins()` and `getConfigs()` (sulu/sulu#9091), and the configurable editor component reads both, so the bundle must not be installed on Sulu 3.1.
+
 ## [Unreleased]
 
 ### Planned Features
